@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['plate']
+
+roboflow:
+  workspace: quang-nguyen-qunka
+  project: vietnam-license-plate-h8t3n-whbuv
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/quang-nguyen-qunka/vietnam-license-plate-h8t3n-whbuv/dataset/1
