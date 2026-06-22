@@ -99,3 +99,41 @@ def add_vehicle(
     finally:
         cursor.close()
         close_connection(conn)
+def get_vehicle_by_id(vehicle_id):
+
+    conn = get_connection()
+
+    if conn is None:
+        return None
+
+    cursor = conn.cursor(
+        dictionary=True
+    )
+
+    query = """
+    SELECT *
+    FROM vehicles
+    WHERE id = %s
+    """
+
+    try:
+
+        cursor.execute(
+            query,
+            (vehicle_id,)
+        )
+
+        return cursor.fetchone()
+
+    except Exception as e:
+
+        print(
+            f"Loi tim xe: {e}"
+        )
+
+        return None
+
+    finally:
+
+        cursor.close()
+        close_connection(conn)

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Danh sách vi phạm</title>
+
+    <link rel="stylesheet"
+          href="/static/css/style.css">
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>ITS SYSTEM</h2>
+
+        <div class="role">
+            🏛️ CƠ QUAN QUẢN LÝ
+        </div>
+
+        <a href="/admin">
+            🏠 Dashboard
+        </a>
+
+        <a href="/upload-video">
+            📁 Upload Video
+        </a>
+
+        <a href="/violations">
+            📋 Danh sách vi phạm
+        </a>
+
+        <a href="/">
+            🚪 Đăng xuất
+        </a>
+
+    </div>
+
+    <div class="main-content">
+
+        <h1>
+            Danh sách vi phạm
+        </h1>
+
+        <table border="1"
+               cellpadding="10"
+               cellspacing="0">
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Biển số</th>
+                
+
+                <th>Loại vi phạm</th>
+
+                <th>Thời gian</th>
+
+                <th>Ảnh</th>
+
+            </tr>
+
+            {% for violation in violations %}
+
+            <tr>
+
+                <td>
+                    {{ violation.violation_id }}
+                </td>
+
+                <td>
+                    {{ violation.license_plate }}
+                </td>
+
+                <td>
+                    {{ violation.violation_type }}
+                </td>
+
+                <td>
+                    {{ violation.violation_time }}
+                </td>
+
+                <td>
+
+                    {% set image_name =
+                    violation.image_path.split('/')[-1] %}
+
+                    <a href="/output/{{ image_name }}"
+                       target="_blank">
+
+                        Xem ảnh
+
+                    </a>
+
+                </td>
+
+                
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</body>
+
+</html>

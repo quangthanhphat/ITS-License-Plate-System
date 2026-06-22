@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Tra cứu vi phạm</title>
+
+    <link rel="stylesheet"
+          href="/static/css/style.css">
+
+</head>
+
+<body>
+
+    <h1>Tra cứu vi phạm</h1>
+
+    <form action="/search"
+          method="post">
+
+        <input type="text"
+               name="license_plate"
+               placeholder="Nhập biển số">
+
+        <button type="submit">
+
+            Tra cứu
+
+        </button>
+
+    </form>
+
+    <br>
+
+    {% if violations %}
+
+    <table border="1">
+
+        <tr>
+
+            <th>Biển số</th>
+
+            <th>Loại vi phạm</th>
+
+            <th>Thời gian</th>
+
+            <th>Ảnh</th>
+
+        </tr>
+
+        {% for violation in violations %}
+
+        <tr>
+
+            <td>
+                {{ violation.license_plate }}
+            </td>
+
+            <td>
+                {{ violation.violation_type }}
+            </td>
+
+            <td>
+                {{ violation.violation_time }}
+            </td>
+
+            <td>
+
+                {% set image_name =
+                violation.image_path.split('/')[-1] %}
+
+                <a href="/output/{{ image_name }}"
+                   target="_blank">
+
+                    Xem ảnh
+
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% endif %}
+
+</body>
+
+</html>

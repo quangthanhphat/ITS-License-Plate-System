@@ -1,5 +1,7 @@
-from Models.ocr_reader import OCRReader
+import sys
+sys.path.append(".")
 
+from Models.ocr_reader import OCRReader
 
 def test_ocr():
 

@@ -5,6 +5,10 @@ from Database.vehicle_repository import (
     get_vehicle_by_plate
 )
 
+from Database.violation_repository import (
+    add_violation
+)
+
 
 def main():
 
@@ -44,6 +48,17 @@ def main():
             print(f"Biển số: {vehicle['license_plate']}")
             print(f"Chủ xe: {vehicle['owner_name']}")
             print(f"Loại xe: {vehicle['vehicle_type']}")
+
+            success = add_violation(
+                vehicle['id'],
+                "Vuot den do",
+                plate_path
+            )
+
+            if success:
+                print("Đã ghi vi phạm vào database")
+            else:
+                print("Ghi vi phạm thất bại")
 
         else:
 

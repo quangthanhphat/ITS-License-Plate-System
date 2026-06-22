@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Upload Video</title>
+
+    <link rel="stylesheet"
+          href="/static/css/style.css">
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>ITS SYSTEM</h2>
+
+        <div class="role">
+            🏛️ CƠ QUAN QUẢN LÝ
+        </div>
+
+        <a href="/admin">
+            🏠 Dashboard
+        </a>
+
+        <a href="/upload-video">
+            📁 Upload Video
+        </a>
+
+        <a href="/">
+            🚪 Đăng xuất
+        </a>
+
+    </div>
+
+    <div class="main-content">
+
+        <h1>Phân tích video</h1>
+
+        <form action="/upload-video"
+              method="post"
+              enctype="multipart/form-data">
+
+            <input type="file"
+                   name="video"
+                   accept=".mp4">
+
+            <br><br>
+
+            <button type="submit">
+
+                PHÂN TÍCH
+
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

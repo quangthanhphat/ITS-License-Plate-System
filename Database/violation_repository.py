@@ -1,15 +1,7 @@
 from Database.db import get_connection, close_connection
 
 
-def add_violation(
-    vehicle_id,
-    violation_type,
-    image_path
-):
-    """
-    Thêm vi phạm mới
-    """
-
+def add_violation(vehicle_id, violation_type, image_path):
     conn = get_connection()
 
     if conn is None:
@@ -34,7 +26,6 @@ def add_violation(
         )
 
         conn.commit()
-
         return True
 
     except Exception as e:
@@ -47,10 +38,6 @@ def add_violation(
 
 
 def get_all_violations():
-    """
-    Lấy toàn bộ vi phạm
-    """
-
     conn = get_connection()
 
     if conn is None:
@@ -64,21 +51,20 @@ def get_all_violations():
     ORDER BY violation_time DESC
     """
 
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+        return cursor.fetchall()
 
-    violations = cursor.fetchall()
+    except Exception as e:
+        print(f"Lỗi lấy vi phạm: {e}")
+        return []
 
-    cursor.close()
-    close_connection(conn)
-
-    return violations
+    finally:
+        cursor.close()
+        close_connection(conn)
 
 
 def get_violations_by_vehicle(vehicle_id):
-    """
-    Lấy danh sách vi phạm của một xe
-    """
-
     conn = get_connection()
 
     if conn is None:
@@ -93,11 +79,103 @@ def get_violations_by_vehicle(vehicle_id):
     ORDER BY violation_time DESC
     """
 
-    cursor.execute(query, (vehicle_id,))
+    try:
+        cursor.execute(
+            query,
+            (vehicle_id,)
+        )
 
-    violations = cursor.fetchall()
+        return cursor.fetchall()
 
-    cursor.close()
-    close_connection(conn)
+    except Exception as e:
+        print(f"Lỗi lấy vi phạm theo xe: {e}")
+        return []
 
-    return violations
+    finally:
+        cursor.close()
+        close_connection(conn)
+def get_all_violations():
+
+    conn = get_connection()
+
+    if conn is None:
+        return []
+
+    cursor = conn.cursor(
+        dictionary=True
+    )
+
+    query = """
+    SELECT *
+    FROM violations
+    ORDER BY violation_id DESC
+    """
+
+    try:
+
+        cursor.execute(query)
+
+        return cursor.fetchall()
+
+    except Exception as e:
+
+        print(
+            f"Loi lay violations: {e}"
+        )
+
+        return []
+
+    finally:
+
+        cursor.close()
+        close_connection(conn)
+def get_violations_by_plate(
+    license_plate
+):
+
+    conn = get_connection()
+
+    if conn is None:
+        return []
+
+    cursor = conn.cursor(
+        dictionary=True
+    )
+
+    query = """
+    SELECT
+        v.license_plate,
+        v.owner_name,
+        v.vehicle_type,
+        vl.violation_id,
+        vl.violation_type,
+        vl.violation_time,
+        vl.image_path
+    FROM violations vl
+    JOIN vehicles v
+        ON vl.vehicle_id = v.id
+    WHERE v.license_plate = %s
+    ORDER BY vl.violation_time DESC
+    """
+
+    try:
+
+        cursor.execute(
+            query,
+            (license_plate,)
+        )
+
+        return cursor.fetchall()
+
+    except Exception as e:
+
+        print(
+            f"Loi tra cuu: {e}"
+        )
+
+        return []
+
+    finally:
+
+        cursor.close()
+        close_connection(conn)

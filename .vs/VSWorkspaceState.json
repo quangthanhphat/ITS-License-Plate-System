@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Database",
+    "\\Database\\__pycache__",
+    "\\Datasets",
+    "\\Input",
+    "\\Models",
+    "\\Static",
+    "\\Static\\css",
+    "\\Templates",
+    "\\Test"
+  ],
+  "SelectedNode": "\\Templates\\citizen_home.html",
+  "PreviewInSolutionExplorer": false
+}
