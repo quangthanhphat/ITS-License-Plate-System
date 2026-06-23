@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Xem trực tiếp</title>
+
+    <link rel="stylesheet"
+          href="/static/css/style.css">
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>ITS SYSTEM</h2>
+
+        <div class="role">
+            🏛️ CƠ QUAN QUẢN LÝ
+        </div>
+
+        <a href="/admin">
+            🏠 Dashboard
+        </a>
+
+        <a href="/upload-video">
+            📁 Upload Video
+        </a>
+
+        <a href="/live">
+            📹 Xem trực tiếp
+        </a>
+
+        <a href="/violations">
+            📋 Danh sách vi phạm
+        </a>
+
+        <a href="/">
+            🚪 Đăng xuất
+        </a>
+
+    </div>
+
+    <div class="main-content">
+
+        <h1>
+            Video đã upload
+        </h1>
+
+        {% for video in videos %}
+
+        <h3>
+            {{ video }}
+        </h3>
+
+        <video width="800"
+               controls>
+
+            <source src="/input/{{ video }}"
+                    type="video/mp4">
+
+        </video>
+
+        <hr>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>

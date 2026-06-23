@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 import subprocess
 from Database.violation_repository import (
     get_all_violations
@@ -18,7 +19,9 @@ from Database.violation_repository import (
 
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-
+from video_classifier import (
+    detect_video_type
+)
 app = FastAPI()
 
 # ==========================
@@ -34,6 +37,11 @@ app.mount(
     "/output",
     StaticFiles(directory="Output"),
     name="output"
+)
+app.mount(
+    "/input",
+    StaticFiles(directory="Input"),
+    name="input"
 )
 # ==========================
 # Templates
@@ -107,7 +115,7 @@ async def upload_video(
         exist_ok=True
     )
 
-    file_path = "Input/demo.mp4"
+    file_path = f"Input/{video.filename}"
 
     with open(
         file_path,
@@ -117,19 +125,46 @@ async def upload_video(
         buffer.write(
             await video.read()
         )
-    subprocess.run(
-        ["python", "video_detector.py"]
-        )
+
+
+        video_type = detect_video_type(
+    file_path
+)
+    if video_type == "REDLIGHT":
+        subprocess.run(
+            ["python", "video_redlight_detector.py"])
+    else:
+        subprocess.run(
+            ["python", "video_detector.py"]
+    )
+
     return{
         "message":
         "Phan tich video hoan tat"
         }
+
 @app.get("/violations")
 async def violations_page(
-    request: Request
+    request: Request,
+    date: str = None
 ):
-
     violations = get_all_violations()
+    if date:
+        violations = [
+
+        v for v in violations
+
+        if str(
+            v["violation_time"].date()
+        ) == date
+
+    ]
+
+    today_count = 0
+    lane_count = 0
+    redlight_count = 0
+
+    today = datetime.now().date()
 
     for violation in violations:
 
@@ -151,13 +186,60 @@ async def violations_page(
                 "license_plate"
             ] = "Unknown"
 
+        violation_date = violation[
+            "violation_time"
+        ].date()
+
+        if violation_date == today:
+
+            today_count += 1
+
+            if (
+                violation["violation_type"]
+                == "Di Sai Lan"
+            ):
+                lane_count += 1
+
+            elif (
+                violation["violation_type"]
+                == "Vuot Den Do"
+            ):
+                redlight_count += 1
+
     return templates.TemplateResponse(
         request=request,
         name="violation_list.html",
         context={
-            "violations": violations
+            "violations": violations,
+            "today_count": today_count,
+            "lane_count": lane_count,
+            "redlight_count": redlight_count,
+            "selected_date": date
         }
     )
+
+@app.get("/live")
+async def live_page(
+    request: Request
+):
+
+    videos = []
+
+    for file in os.listdir("Input"):
+
+        if file.endswith(".mp4"):
+
+            videos.append(file)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="live.html",
+        context={
+            "videos": videos
+        }
+    )
+
+
 @app.get("/search")
 async def search_page(
     request: Request

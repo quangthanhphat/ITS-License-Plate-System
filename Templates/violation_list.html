@@ -43,6 +43,41 @@
         <h1>
             Danh sách vi phạm
         </h1>
+        <form method="get" action="/violations">
+
+            <label>Chọn ngày:</label>
+
+            <input type="date"
+                   name="date"
+                   value="{{ selected_date }}">
+
+            <button type="submit">
+                Lọc
+            </button>
+
+        </form>
+
+        <br>
+        <h2>
+            📊 Thống kê hôm nay
+        </h2>
+
+        <p>
+            Tổng vi phạm:
+            <b>{{ today_count }}</b>
+        </p>
+
+        <p>
+            Đi sai làn:
+            <b>{{ lane_count }}</b>
+        </p>
+
+        <p>
+            Vượt đèn đỏ:
+            <b>{{ redlight_count }}</b>
+        </p>
+
+        <hr>
 
         <table border="1"
                cellpadding="10"
@@ -53,7 +88,6 @@
                 <th>ID</th>
 
                 <th>Biển số</th>
-                
 
                 <th>Loại vi phạm</th>
 
@@ -97,7 +131,6 @@
 
                 </td>
 
-                
             </tr>
 
             {% endfor %}
